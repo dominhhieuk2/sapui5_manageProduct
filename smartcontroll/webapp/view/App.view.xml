@@ -1,0 +1,203 @@
+<mvc:View
+    controllerName="smartcontroll.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:smartfilterbar="sap.ui.comp.smartfilterbar"
+    xmlns:smarttable="sap.ui.comp.smarttable"
+>
+    <App id="app">
+        <Page
+            id="page"
+            title="{i18n>title}"
+        >
+            <content>
+                <smartfilterbar:SmartFilterBar
+                    id="idSmartFilterBar"
+                    entitySet="ProductSet"
+                >
+                    <smartfilterbar:controlConfiguration>
+                        <smartfilterbar:ControlConfiguration
+                            id="idProduct"
+                            visibleInAdvancedArea="true"
+                            label="Product ID"
+                            key="ProductID"
+                        />
+                        <smartfilterbar:ControlConfiguration
+                            id="idCategory"
+                            visibleInAdvancedArea="true"
+                            label="Category"
+                            key="Category"
+                        />
+                        <smartfilterbar:ControlConfiguration
+                            id="idCurrencyCode"
+                            visibleInAdvancedArea="true"
+                            label="CurrencyCode"
+                            key="CurrencyCode"
+                        />
+                    </smartfilterbar:controlConfiguration>
+                </smartfilterbar:SmartFilterBar>
+                <smarttable:SmartTable
+                    header="Product"
+                    showRowCount="true"
+                    id="idSmartTable"
+                    smartFilterId="idSmartFilterBar"
+                    entitySet="ProductSet"
+                    enableAutoBinding="true"
+                    tableType="ResponsiveTable"
+                    initiallyVisibleFields="ProductID,TypeCode,SupplierID,CurrencyCode,Name,Category,Price,TaxTarifCode,MeasureUnit"
+                    app:useSmartToggle="true"
+                    useExportToExcel="false"
+                    useTablePersonalisation="false"
+                    showTablePersonalisation="false"
+                    fieldChange="onFieldChange"
+                >
+                    <Table
+                        id="idTable"
+                        mode="MultiSelect"
+                    >
+                        <columns>
+                            <Column
+                                id="idStatusColumn"
+                                visible="false"
+                            >
+                                <customData>
+                                    <core:CustomData
+                                        key="p13nData"
+                                        value="{
+                                                    columnKey: 'Status',
+                                                    columnIndex: 0
+                                                }"
+                                    />
+                                </customData>
+                                <core:Icon
+                                    activeBackgroundColor=""
+                                    activeColor=""
+                                    alt=""
+                                    backgroundColor=""
+                                    color=""
+                                    decorative="true"
+                                    height=""
+                                    hoverBackgroundColor=""
+                                    hoverColor=""
+                                    noTabStop="false"
+                                    size=""
+                                    src="sap-icon://edit"
+                                    useIconTooltip="true"
+                                    width=""
+                                />
+                            </Column>
+                            <Column>
+                                <customData>
+                                    <core:CustomData
+                                        key="p13nData"
+                                        value="{
+                                                    columnKey: 'ProductID',
+                                                    leadingProperty: 'ProductID',
+                                                    columnIndex: 1
+                                                }"
+                                    />
+                                </customData>
+                                <Text text="Product ID" />
+                            </Column>
+                            <Column>
+                                <customData>
+                                    <core:CustomData
+                                        key="p13nData"
+                                        value="{
+                                                    columnKey: 'SupplierID',
+                                                    leadingProperty: 'SupplierID',
+                                                    columnIndex: 3
+                                                }"
+                                    />
+                                </customData>
+                                <Text text="Supplier" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem vAlign="Inherit">
+                                <cells>
+                                    <core:Icon />
+                                    <Text text="{ProductID}" />
+                                    <ComboBox
+                                        items="{/BusinessPartnerSet}"
+                                        selectedKey="{SupplierID}"
+                                        selectionChange="onComboBoxChange"
+                                        enabled="{appView>/editable}"
+                                    >
+                                        <items>
+                                            <core:Item
+                                                key="{BusinessPartnerID}"
+                                                text="{CompanyName}"
+                                            />
+                                        </items>
+                                    </ComboBox>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+
+                    <smarttable:customToolbar>
+                        <OverflowToolbar id="idOverflow">
+                            <ToolbarSpacer />
+                            <Toolbar
+                                id="idToolbarCrud"
+                                visible="false"
+                                style="Clear"
+                            >
+                                <GenericTag
+                                    id="idGenericTag"
+                                    text="Not updated"
+                                    status="Success"
+                                />
+                                <Button
+                                    id="editButton"
+                                    text="Reset"
+                                    type="Ghost"
+                                    press="onReset"
+                                />
+                                <Button
+                                    id="addButton"
+                                    text="Add"
+                                    type="Ghost"
+                                    press="onAdd"
+                                />
+                                <Button
+                                    id="deleteButton"
+                                    text="Remove"
+                                    type="Reject"
+                                    press="onDelete"
+                                />
+                            </Toolbar>
+                            <Text text="Edit Mode" />
+
+                            <Switch
+                                change=".onToggleSave"
+                                id="idSwitch"
+                                customTextOff=""
+                                customTextOn=""
+                                enabled="true"
+                                state="false"
+                            />
+                            <Toolbar
+                                id="idSendButton"
+                                visible="false"
+                                style="Clear"
+                            >
+                                <ToolbarSeparator />
+                                <Button
+                                    id="sendButton"
+                                    text="Send"
+                                    type="Emphasized"
+                                    press="onSend"
+                                />
+                            </Toolbar>
+                        </OverflowToolbar>
+                    </smarttable:customToolbar>
+                </smarttable:SmartTable>
+            </content>
+        </Page>
+    </App>
+</mvc:View>
